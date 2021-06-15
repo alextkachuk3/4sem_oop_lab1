@@ -28,12 +28,39 @@ namespace _4sem_oop_lab1
 
             appContext = new AppContext();
 
-            
+            foreach(var note in appContext.Notes)
+            {
+                NotesList.Items.Add(note.short_text);
+            }
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
+            
+            string my_text = "";
+            for (int i = 0; i < 50; i++)
+            {
+                my_text += "a";
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                my_text += "b";
+            }
+            Note note = new Note(my_text);
+            note.server_id = 4333;
+            appContext.Notes.Add(note);
 
+            appContext.SaveChanges();
+
+            NotesList.Items.Add(note.short_text);
+
+            NoteEditor noteEditor = new NoteEditor(note);
+
+            noteEditor.Owner = this;
+
+            noteEditor.Show();
         }
+
+        
     }
 }

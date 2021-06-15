@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_4sem_oop_lab1"
         mc:Ignorable="d"
-        Title="Notes" Height="650" Width="350" MinWidth="300" MinHeight="400" MaxHeight="700" MaxWidth="400"
+        Title="Notes" Height="650" Width="330" MinWidth="250" MinHeight="400" MaxHeight="700" MaxWidth="400"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
@@ -14,7 +14,7 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-     Icon="sticky_note.png">
+     Icon="sticky_note.png" WindowStyle="SingleBorderWindow">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20*"/>
@@ -28,11 +28,19 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Background="LightYellow">
-            
-        </ListBox>
 
-        <Button x:Name="Add" Content="+" Grid.Column="1" Grid.Row="1"/>
+        <ListView x:Name="NotesList" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Grid.RowSpan="4" Background="LightYellow">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="100" />
+                    <Setter Property="MaxWidth" Value="285"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="VerticalAlignment" Value="Top"/>                    
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <Button x:Name="Add" Content="+" Grid.Column="1" Grid.Row="1" Click="Add_Click"/>
         <Button Grid.Column="1" Grid.Row="2">
             <Image x:Name="AccountManageIcon" Source="login.png"/>
         </Button>

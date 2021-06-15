@@ -103,6 +103,9 @@
       <DependentUpon>Icons.resx</DependentUpon>
     </Compile>
     <Compile Include="Note.cs" />
+    <Compile Include="NoteEditor.xaml.cs">
+      <DependentUpon>NoteEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="User.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -116,6 +119,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="NoteEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
