@@ -20,9 +20,13 @@ namespace _4sem_oop_lab1
     /// </summary>
     public partial class MainWindow : Window
     {
+        AppContext appContext;
+
         public MainWindow()
         {
             InitializeComponent();
+
+            appContext = new AppContext();
         }
     }
 }
