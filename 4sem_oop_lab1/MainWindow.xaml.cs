@@ -27,6 +27,13 @@ namespace _4sem_oop_lab1
             InitializeComponent();
 
             appContext = new AppContext();
+
+            
+        }
+
+        private void Add_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
