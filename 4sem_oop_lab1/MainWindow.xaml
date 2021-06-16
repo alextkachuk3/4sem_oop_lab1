@@ -35,7 +35,9 @@
                     <Setter Property="Height" Value="100" />
                     <Setter Property="MaxWidth" Value="285"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
-                    <Setter Property="VerticalAlignment" Value="Top"/>                    
+                    <Setter Property="VerticalAlignment" Value="Top"/>
+                    <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
+                    <Setter Property="TextBlock.Height" Value="100"/>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>

@@ -28,5 +28,13 @@ namespace _4sem_oop_lab1
         }
 
         private Note note;
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            note.SetText(NoteText.Text);
+            AppContext appContext = new AppContext();
+            appContext.Notes.Add(note);
+            appContext.SaveChanges();
+        }
     }
 }

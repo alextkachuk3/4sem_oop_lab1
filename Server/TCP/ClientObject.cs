@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 
@@ -39,17 +40,17 @@ namespace Server.TCP
                 {
                     case COMMAND.LOGIN:
                         {
-
+                            Login();
                             break;
                         }
                     case COMMAND.REGISTER:
                         {
-
+                            Regiser();
                             break;
                         }
                     case COMMAND.RECEIVE_NOTES_ID:
                         {
-
+                            
                             break;
                         }
                     case COMMAND.DELETE_NOTE:
@@ -71,6 +72,62 @@ namespace Server.TCP
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+            }
+        }
+
+        void Login()
+        {
+            string login = ReceiveFromApp();
+            string password = ReceiveFromApp();
+            User user = appContext.Users.ToList().FindAll(x => x.login == login && x.password == password).First();
+            if(user == null)
+            {
+                SendToApp(COMMAND.LOGIN_FAIL);
+            }
+            else
+            {
+                SendToApp(COMMAND.LOGIN_SUCCESS);
+                SendToApp(user.id.ToString());
+            }
+        }
+
+        void Regiser()
+        {
+            string login = ReceiveFromApp();
+            string password = ReceiveFromApp();
+            User user = appContext.Users.ToList().FindAll(x => x.login == login).First();
+            if(user != null)
+            {
+                SendToApp(COMMAND.REGISTER_FAIL);
+            }
+            else
+            {
+                SendToApp(COMMAND.REGISTER_SUCCESS);
+                user = new User(login, password);
+            }
+        }
+
+        void SendNotes()
+        {
+            int id = int.Parse(ReceiveFromApp());
+            var user = appContext.Users.Find(id);
+            if(user == null)
+            {
+                throw new Exception("User ID not exist");
+            }
+            else
+            {
+                SendToApp(user.notes_id);
+            }
+        }
+
+        void SendNote()
+        {
+            int id = int.Parse(ReceiveFromApp());
+            var note = appContext.Notes.Find(id);
+            if(note == null)
+            {
+                throw new Exception("Note ID not exist");
             }
         }
 

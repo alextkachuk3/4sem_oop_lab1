@@ -32,11 +32,14 @@ namespace _4sem_oop_lab1
             {
                 NotesList.Items.Add(note.short_text);
             }
+
+            TCP.Client client = new TCP.Client("192.168.0.85", 25565);
+            
+
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
-            
             string my_text = "";
             for (int i = 0; i < 50; i++)
             {
@@ -46,11 +49,31 @@ namespace _4sem_oop_lab1
             {
                 my_text += "b";
             }
+            for (int i = 0; i < 50; i++)
+            {
+                my_text += "b";
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                my_text += "b";
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                my_text += "b";
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                my_text += "b";
+            }
+            for (int i = 0; i < 50; i++)
+            {
+                my_text += "b";
+            }
             Note note = new Note(my_text);
             note.server_id = 4333;
-            appContext.Notes.Add(note);
+            //appContext.Notes.Add(note);
 
-            appContext.SaveChanges();
+            //appContext.SaveChanges();
 
             NotesList.Items.Add(note.short_text);
 

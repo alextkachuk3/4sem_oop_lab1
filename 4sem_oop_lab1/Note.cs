@@ -21,21 +21,21 @@ namespace _4sem_oop_lab1
         public int local_id { get; private set; }
         public int server_id { get; set; }
         public string text { get; private set; }
-        public string short_text { get; set; }
+        public string short_text { get; private set; }
 
         private void UpdateShortText()
         {
             short_text = string.Empty;
-            for(int i = 0, j = 0 ; i < 350 && i < text.Length; i++, j++)
+            for (int i = 0, j = 0; i < 350 && i < text.Length; i++, j++)
             {
-                if(j==50)
+                if (j == 50)
                 {
                     short_text += '\n';
                     j = 0;
                 }
                 short_text += text[i];
             }
-            for(int i = 0, j = 0; i < 350 - text.Length; i++, j++)
+            for (int i = 0, j = 0; i < 350 - text.Length; i++, j++)
             {
                 if (j == 50)
                 {
@@ -44,6 +44,28 @@ namespace _4sem_oop_lab1
                 }
                 short_text += " ";
             }
+
+            //if (text.Length < 10)
+            //{
+            //    for (int i = 0; i < 10; i++)
+            //    {
+            //        if (i < text.Length)
+            //        {
+            //            short_text += text[i];
+            //        }
+            //        else
+            //        {
+            //            short_text += " ";
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    for(int i = 0; i < 350 && i < text.Length; i++)
+            //    {
+            //        short_text += text[i];
+            //    }
+            //}
         }
 
         public void SetText(string text)

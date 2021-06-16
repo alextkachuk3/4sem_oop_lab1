@@ -14,9 +14,10 @@
      TextOptions.TextRenderingMode="Auto"
      Background="{DynamicResource MaterialDesignPaper}"
      FontFamily="{DynamicResource MaterialDesignFont}"
-     Icon="sticky_note.png" ResizeMode="NoResize">
+     Icon="sticky_note.png" ResizeMode="NoResize" Closed="Window_Closed">
     <Grid>
-        <TextBlock x:Name="NoteText" HorizontalAlignment="Left" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
 
+        <TextBox  Grid.Row="0" Grid.Column="0" AcceptsReturn="True"  x:Name="NoteText" Text="TextBlock" SpellCheck.IsEnabled="True" TextWrapping="Wrap" Height="360" VerticalScrollBarVisibility="Auto"/>
+        
     </Grid>
 </Window>

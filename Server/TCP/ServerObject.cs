@@ -26,7 +26,7 @@ namespace Server.TCP
                 TcpClient client = listener.AcceptTcpClient();
                 Console.WriteLine("Connect to " + ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString());
                 ClientObject clientObject = new ClientObject(client);
-                Thread clientThread = new Thread(new ThreadStart(clientObject.GetCommand));                
+                Thread clientThread = new Thread(new ThreadStart(clientObject.GetCommand));
                 clientThread.Start();
             }
         }
