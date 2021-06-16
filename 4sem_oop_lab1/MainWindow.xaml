@@ -43,7 +43,7 @@
         </ListView>
 
         <Button x:Name="Add" Content="+" Grid.Column="1" Grid.Row="1" Click="Add_Click"/>
-        <Button Grid.Column="1" Grid.Row="2">
+        <Button x:Name="AccountButton" Grid.Column="1" Grid.Row="2" Click="AccountButton_Click">
             <Image x:Name="AccountManageIcon" Source="login.png"/>
         </Button>
 

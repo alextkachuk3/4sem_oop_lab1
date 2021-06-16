@@ -22,6 +22,8 @@ namespace _4sem_oop_lab1
     {
         AppContext appContext;
 
+        private TCP.Client client;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -33,9 +35,19 @@ namespace _4sem_oop_lab1
                 NotesList.Items.Add(note.short_text);
             }
 
-            TCP.Client client = new TCP.Client("192.168.0.85", 25565);
-            
-
+            if(appContext.Users.ToList().Count == 1)
+            {
+                //BitmapImage logoutImage = new BitmapImage();
+                //logoutImage.BeginInit();
+                //logoutImage.UriSource = new Uri("pack://application:,,,/AssemblyName;component/Resources/logout.png", UriKind.Absolute);
+                //logoutImage.EndInit();
+                //AccountManageIcon.Source = logoutImage;
+                AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
+            }
+            else
+            {
+                client = new TCP.Client("192.168.0.85", 25565);
+            }
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
@@ -83,7 +95,17 @@ namespace _4sem_oop_lab1
 
             noteEditor.Show();
         }
-
         
+        private void AccountButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(appContext.Users.ToList().Count == 0)
+            {
+                Login loginWindow = new Login();
+
+                loginWindow.Owner = this;
+
+                loginWindow.Show();
+            }
+        }
     }
 }

@@ -14,8 +14,10 @@ namespace _4sem_oop_lab1
             this.login = login;
             this.password = password;
         }
+        
         public int id { get; private set; }
         public string login { get; private set; }
         public string password { get; set; }
+        public int is_logined { get; set; }
     }
 }
