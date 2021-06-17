@@ -37,10 +37,6 @@ namespace _4sem_oop_lab1
             {                
                 AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
             }
-            else
-            {
-                
-            }
         }
 
         private void Add_Click(object sender, RoutedEventArgs e)
