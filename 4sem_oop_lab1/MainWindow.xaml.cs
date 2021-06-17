@@ -29,10 +29,7 @@ namespace _4sem_oop_lab1
 
             NotesGrid = NotesList;
 
-            //foreach(var note in appContext.Notes)
-            //{
-            //    NotesList.Items.Add(note.short_text);
-            //}
+            NotesList.CanUserAddRows = false;
 
             NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
 
@@ -126,6 +123,11 @@ namespace _4sem_oop_lab1
 
         private void Remove_Click(object sender, RoutedEventArgs e)
         {
+            Note note = (Note)NotesList.SelectedItem;
+            
+                AppContext.getDataBase().Notes.Remove(note);
+                AppContext.getDataBase().SaveChanges();
+                NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
             
         }
 
@@ -136,7 +138,6 @@ namespace _4sem_oop_lab1
             NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "text").Visibility = Visibility.Hidden;
             NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "last_mod_time").Visibility = Visibility.Hidden;
             NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "short_text").Width = 317;
-            NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "short_text").Header = string.Empty;
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
