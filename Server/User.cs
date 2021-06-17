@@ -13,8 +13,9 @@ namespace Server
         {
             this.login = login;
             this.password = password;
+            notes_id = string.Empty;
         }
-        public int id { get; private set; }
+        public int id { get; set; }
         public string login { get; set; }
         public string password { get; set; }
         public string notes_id { get; private set; }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _4sem_oop_lab1.TCP;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,6 @@ namespace _4sem_oop_lab1
     {
         AppContext appContext;
 
-        private TCP.Client client;
 
         public MainWindow()
         {
@@ -36,17 +36,12 @@ namespace _4sem_oop_lab1
             }
 
             if(appContext.Users.ToList().Count == 1)
-            {
-                //BitmapImage logoutImage = new BitmapImage();
-                //logoutImage.BeginInit();
-                //logoutImage.UriSource = new Uri("pack://application:,,,/AssemblyName;component/Resources/logout.png", UriKind.Absolute);
-                //logoutImage.EndInit();
-                //AccountManageIcon.Source = logoutImage;
+            {                
                 AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
             }
             else
             {
-                client = new TCP.Client("192.168.0.85", 25565);
+                
             }
         }
 
@@ -91,7 +86,7 @@ namespace _4sem_oop_lab1
 
             NoteEditor noteEditor = new NoteEditor(note);
 
-            noteEditor.Owner = this;
+            // noteEditor.Owner = this;
 
             noteEditor.Show();
         }
@@ -106,6 +101,21 @@ namespace _4sem_oop_lab1
 
                 loginWindow.Show();
             }
+            else 
+            {
+                MessageBoxResult boxResult = MessageBox.Show("Are you sure want to signout?", "Logout",
+                MessageBoxButton.YesNo);
+                if(boxResult == MessageBoxResult.Yes)
+                {
+                    foreach (User user in appContext.Users)
+                    {
+                        appContext.Users.Remove(user);
+                    }
+                    appContext.SaveChanges();
+                    AccountManageIcon.Source = new BitmapImage(new Uri("login.png", UriKind.Relative));
+                }
+            }
+            
         }
     }
 }

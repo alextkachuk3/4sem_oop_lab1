@@ -9,8 +9,8 @@
     <Grid>
         <PasswordBox x:Name="PasswordField" HorizontalAlignment="Left" Margin="70,70,0,0" VerticalAlignment="Top" Width="155" ToolTip="Password"/>
         <TextBox x:Name="LoginField" HorizontalAlignment="Left" Height="23" Margin="70,25,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" RenderTransformOrigin="-0.253,0.209" ToolTip="Login"/>
-        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Right" Margin="0,108,9.6,0" VerticalAlignment="Top" Width="130" ToolTip="Login"/>
-        <Button x:Name="RegistrationButton" Content="Registration" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Width="130"/>
+        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Right" Margin="0,108,9.6,0" VerticalAlignment="Top" Width="130" ToolTip="Login" Click="LoginButton_Click"/>
+        <Button x:Name="RegistrationButton" Content="Registration" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Width="130" Click="RegistrationButton_Click"/>
 
     </Grid>
 </Window>

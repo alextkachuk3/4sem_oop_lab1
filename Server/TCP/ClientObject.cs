@@ -33,8 +33,8 @@ namespace Server.TCP
 
         public void GetCommand()
         {
-            try
-            {
+            //try
+            //{
                 COMMAND command = (COMMAND)int.Parse(ReceiveFromApp());
                 switch(command)
                 {
@@ -68,18 +68,18 @@ namespace Server.TCP
                             throw new Exception("Wrong command!");
                         }
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.Message);
+            //}
         }
 
         void Login()
         {
             string login = ReceiveFromApp();
             string password = ReceiveFromApp();
-            User user = appContext.Users.ToList().FindAll(x => x.login == login && x.password == password).First();
+            User user = appContext.Users.ToList().Find(x => x.login == login && x.password == password);
             if(user == null)
             {
                 SendToApp(COMMAND.LOGIN_FAIL);
@@ -95,7 +95,7 @@ namespace Server.TCP
         {
             string login = ReceiveFromApp();
             string password = ReceiveFromApp();
-            User user = appContext.Users.ToList().FindAll(x => x.login == login).First();
+            User user = appContext.Users.ToList().Find(x => x.login == login);
             if(user != null)
             {
                 SendToApp(COMMAND.REGISTER_FAIL);
@@ -104,6 +104,8 @@ namespace Server.TCP
             {
                 SendToApp(COMMAND.REGISTER_SUCCESS);
                 user = new User(login, password);
+                SendToApp(user.id.ToString());
+                appContext.Users.Add(user);
             }
         }
 

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
+using System.Threading;
 
 namespace _4sem_oop_lab1.TCP
 {
@@ -20,29 +21,79 @@ namespace _4sem_oop_lab1.TCP
         ADD_NOTE
     }
 
-    class Client
+    static class Client
     {
-        public Client(string ip, int port)
+        const string ip = "192.168.0.85";
+        const int port = 25565;
+        static AppContext appContext;
+        static Client()
         {
+            appContext = new AppContext();
             client = new TcpClient(ip, port);
         }
 
-        public bool Login(string login, string password)
+        public static bool Login(string login, string password)
         {
             SendToApp(COMMAND.LOGIN);
             SendToApp(login);
             SendToApp(password);
+            COMMAND command = (COMMAND)int.Parse(ReceiveFromApp());
+            if(command == COMMAND.LOGIN_SUCCESS)
+            {
+                int id = int.Parse(Client.ReceiveFromApp());
 
-            return true;
+                foreach (User user in appContext.Users)
+                {
+                    appContext.Users.Remove(user);
+                }
+
+                User login_user = new User(login, password);
+
+                login_user.is_logined = 1;
+
+                login_user.id = id;
+
+                appContext.Users.Add(login_user);
+
+                appContext.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
 
-        public bool Register(string login, string password)
+        public static bool Register(string login, string password)
         {
+            SendToApp(COMMAND.REGISTER);
+            SendToApp(login);
+            SendToApp(password);
+            COMMAND command = (COMMAND)int.Parse(ReceiveFromApp());
+            if (command == COMMAND.REGISTER_SUCCESS)
+            {
+                int id = int.Parse(Client.ReceiveFromApp());
+
+                foreach (User user in appContext.Users)
+                {
+                    appContext.Users.Remove(user);
+                }
+
+                User login_user = new User(login, password);
+
+                login_user.is_logined = 1;
+
+                login_user.id = id;
+
+                appContext.Users.Add(login_user);
+
+                appContext.SaveChanges();
+
+                return true;
+            }
 
             return false;
         }
 
-        public List<int> GetNotesID()
+        public static List<int> GetNotesID()
         {
             List<int> notes_id = new List<int>();
 
@@ -50,7 +101,7 @@ namespace _4sem_oop_lab1.TCP
             return notes_id;
         }
 
-        private TcpClient client;
+        private static TcpClient client;
 
         /*public void GetCommand()
         {
@@ -97,7 +148,7 @@ namespace _4sem_oop_lab1.TCP
         }*/
 
 
-        private void SendToApp(string data)
+        public static void SendToApp(string data)
         {
             NetworkStream stream = null;
             try
@@ -113,7 +164,7 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
-        private void SendToAppBigText(string text)
+        private static void SendToAppBigText(string text)
         {
             NetworkStream stream = null;
             try
@@ -129,7 +180,7 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
-        private string ReceiveBigText()
+        private static string ReceiveBigText()
         {
             NetworkStream stream = null;
             try
@@ -147,7 +198,7 @@ namespace _4sem_oop_lab1.TCP
             return null;
         }
 
-        private void SendToApp(COMMAND command)
+        private static void SendToApp(COMMAND command)
         {
             NetworkStream stream = null;
             try
@@ -163,7 +214,7 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
-        private string ReceiveFromApp()
+        public static string ReceiveFromApp()
         {
             NetworkStream stream = null;
 
