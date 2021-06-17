@@ -53,5 +53,10 @@ namespace _4sem_oop_lab1
                 MessageBox.Show("Login is busy!");
             }
         }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            this.Owner.Visibility = Visibility.Visible;
+        }
     }
 }

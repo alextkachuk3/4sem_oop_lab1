@@ -29,11 +29,12 @@ namespace _4sem_oop_lab1.TCP
         static Client()
         {
             appContext = new AppContext();
-            client = new TcpClient(ip, port);
+            //client = new TcpClient();
         }
 
         public static bool Login(string login, string password)
         {
+            Open();
             SendToApp(COMMAND.LOGIN);
             SendToApp(login);
             SendToApp(password);
@@ -47,23 +48,40 @@ namespace _4sem_oop_lab1.TCP
                     appContext.Users.Remove(user);
                 }
 
+                appContext.SaveChanges();
+
                 User login_user = new User(login, password);
 
                 login_user.is_logined = 1;
 
-                login_user.id = id;
+                login_user.server_id = id;
 
                 appContext.Users.Add(login_user);
 
                 appContext.SaveChanges();
 
+                Close();
+
                 return true;
             }
+            Close();
+
             return false;
+        }
+
+        private static void Open()
+        {
+            client = new TcpClient(ip, port);
+        }
+
+        private static void Close()
+        {
+            client.Close();
         }
 
         public static bool Register(string login, string password)
         {
+            Open();
             SendToApp(COMMAND.REGISTER);
             SendToApp(login);
             SendToApp(password);
@@ -77,19 +95,23 @@ namespace _4sem_oop_lab1.TCP
                     appContext.Users.Remove(user);
                 }
 
+                appContext.SaveChanges();
+
                 User login_user = new User(login, password);
 
                 login_user.is_logined = 1;
 
-                login_user.id = id;
+                login_user.server_id = id;
 
                 appContext.Users.Add(login_user);
 
                 appContext.SaveChanges();
 
+                Close();
+
                 return true;
             }
-
+            Close();
             return false;
         }
 

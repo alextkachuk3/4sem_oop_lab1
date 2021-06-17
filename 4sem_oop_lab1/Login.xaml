@@ -5,12 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_4sem_oop_lab1"
         mc:Ignorable="d"
-        Title="Authorization" Height="180" Width="300" ResizeMode="NoResize" Icon="account.png">
+        Title="Authorization" Height="180" Width="300" ResizeMode="NoResize" Icon="account.png" Closing="Window_Closing">
     <Grid>
-        <PasswordBox x:Name="PasswordField" HorizontalAlignment="Left" Margin="70,70,0,0" VerticalAlignment="Top" Width="155" ToolTip="Password"/>
-        <TextBox x:Name="LoginField" HorizontalAlignment="Left" Height="23" Margin="70,25,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" RenderTransformOrigin="-0.253,0.209" ToolTip="Login"/>
-        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Right" Margin="0,108,9.6,0" VerticalAlignment="Top" Width="130" ToolTip="Login" Click="LoginButton_Click"/>
-        <Button x:Name="RegistrationButton" Content="Registration" HorizontalAlignment="Left" Margin="10,108,0,0" VerticalAlignment="Top" Width="130" Click="RegistrationButton_Click"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="4*"/>
+        </Grid.RowDefinitions>
+        <PasswordBox x:Name="PasswordField" HorizontalAlignment="Left" Margin="70,40,0,0" VerticalAlignment="Top" Width="155" ToolTip="Password" Grid.Row="1"/>
+        <TextBox x:Name="LoginField" HorizontalAlignment="Left" Height="23" Margin="70,25,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="155" RenderTransformOrigin="-0.253,0.209" ToolTip="Login" Grid.RowSpan="2"/>
+        <Button x:Name="LoginButton" Content="Login" HorizontalAlignment="Right" Margin="0,78,9.6,0" VerticalAlignment="Top" Width="130" ToolTip="Login" Click="LoginButton_Click" Grid.Row="1"/>
+        <Button x:Name="RegistrationButton" Content="Registration" HorizontalAlignment="Left" Margin="10,78,0,0" VerticalAlignment="Top" Width="130" Click="RegistrationButton_Click" Grid.Row="1"/>
 
     </Grid>
 </Window>

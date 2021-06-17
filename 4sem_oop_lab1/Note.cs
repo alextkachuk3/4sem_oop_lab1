@@ -26,23 +26,28 @@ namespace _4sem_oop_lab1
         private void UpdateShortText()
         {
             short_text = string.Empty;
-            for (int i = 0, j = 0; i < 350 && i < text.Length; i++, j++)
+            for (int i = 0, j = 0; i < 200 && i < text.Length; i++, j++)
             {
-                if (j == 50)
+                if (j == 48)
                 {
                     short_text += '\n';
                     j = 0;
                 }
                 short_text += text[i];
             }
-            for (int i = 0, j = 0; i < 350 - text.Length; i++, j++)
+            //for (int i = 0, j = 0; i < 350 - text.Length; i++, j++)
+            //{
+            //    if (j == 50)
+            //    {
+            //        short_text += '\n';
+            //        j = 0;
+            //    }
+            //    short_text += " ";
+            //}
+
+            for(int i = 0; i < 6; i++)
             {
-                if (j == 50)
-                {
-                    short_text += '\n';
-                    j = 0;
-                }
-                short_text += " ";
+                short_text += '\n';
             }
 
             //if (text.Length < 10)

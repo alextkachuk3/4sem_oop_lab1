@@ -106,6 +106,7 @@ namespace Server.TCP
                 user = new User(login, password);
                 SendToApp(user.id.ToString());
                 appContext.Users.Add(user);
+                appContext.SaveChanges();
             }
         }
 
