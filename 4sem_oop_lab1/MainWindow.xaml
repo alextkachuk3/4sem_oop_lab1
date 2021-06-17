@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:_4sem_oop_lab1"
         mc:Ignorable="d"
-        Title="Notes" Height="650" Width="330" MinWidth="250" MinHeight="400" MaxHeight="700" MaxWidth="400"
+        Title="Notes" Height="650" Width="340" MinWidth="250" MinHeight="400" MaxHeight="700" MaxWidth="400"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
      TextElement.FontWeight="Regular"
@@ -40,11 +40,11 @@
                 
                 <Style TargetType="DataGridRow">
                     <Setter Property="Height" Value="100" />
-                    <Setter Property="MaxWidth" Value="285"/>
+                    <Setter Property="MaxWidth" Value="310"/>
                     <Setter Property="HorizontalAlignment" Value="Left"/>
                     <Setter Property="VerticalAlignment" Value="Top"/>
                     <Setter Property="TextBlock.TextWrapping" Value="Wrap"/>
-                    <Setter Property="TextBlock.Height" Value="100"/>
+                    <Setter Property="TextBlock.Height" Value="95"/>
                 </Style>
             </DataGrid.ItemContainerStyle>
         </DataGrid>

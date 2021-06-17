@@ -15,6 +15,7 @@ namespace _4sem_oop_lab1
         {
             this.text = text;
             UpdateShortText();
+            UpdateEditTime();
         }
 
         [Key]
@@ -22,13 +23,14 @@ namespace _4sem_oop_lab1
         public int server_id { get; set; }
         public string text { get; private set; }
         public string short_text { get; private set; }
+        public string last_mod_time { get; private set; }
 
         private void UpdateShortText()
         {
             short_text = string.Empty;
             for (int i = 0, j = 0; i < 200 && i < text.Length; i++, j++)
             {
-                if (j == 48)
+                if (j == 39)
                 {
                     short_text += '\n';
                     j = 0;
@@ -45,10 +47,10 @@ namespace _4sem_oop_lab1
             //    short_text += " ";
             //}
 
-            for(int i = 0; i < 6; i++)
-            {
-                short_text += '\n';
-            }
+            //for(int i = 0; i < 6; i++)
+            //{
+            //    short_text += '\n';
+            //}
 
             //if (text.Length < 10)
             //{
@@ -77,6 +79,12 @@ namespace _4sem_oop_lab1
         {
             this.text = text;
             UpdateShortText();
+            UpdateEditTime();
+        }
+
+        public void UpdateEditTime()
+        {
+            this.last_mod_time = DateTime.UtcNow.ToString();
         }
     }
 }

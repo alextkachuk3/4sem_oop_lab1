@@ -35,7 +35,7 @@ namespace Server.TCP
         {
             //try
             //{
-                COMMAND command = (COMMAND)int.Parse(ReceiveFromApp());
+                COMMAND command = (COMMAND)int.Parse(Receive());
                 switch(command)
                 {
                     case COMMAND.LOGIN:
@@ -50,12 +50,12 @@ namespace Server.TCP
                         }
                     case COMMAND.RECEIVE_NOTES_ID:
                         {
-                            
+                            SendNotes();
                             break;
                         }
                     case COMMAND.DELETE_NOTE:
                         {
-
+                            
                             break;
                         }
                     case COMMAND.ADD_NOTE:
@@ -77,34 +77,34 @@ namespace Server.TCP
 
         void Login()
         {
-            string login = ReceiveFromApp();
-            string password = ReceiveFromApp();
+            string login = Receive();
+            string password = Receive();
             User user = appContext.Users.ToList().Find(x => x.login == login && x.password == password);
             if(user == null)
             {
-                SendToApp(COMMAND.LOGIN_FAIL);
+                Send(COMMAND.LOGIN_FAIL);
             }
             else
             {
-                SendToApp(COMMAND.LOGIN_SUCCESS);
-                SendToApp(user.id.ToString());
+                Send(COMMAND.LOGIN_SUCCESS);
+                Send(user.id.ToString());
             }
         }
 
         void Regiser()
         {
-            string login = ReceiveFromApp();
-            string password = ReceiveFromApp();
+            string login = Receive();
+            string password = Receive();
             User user = appContext.Users.ToList().Find(x => x.login == login);
             if(user != null)
             {
-                SendToApp(COMMAND.REGISTER_FAIL);
+                Send(COMMAND.REGISTER_FAIL);
             }
             else
             {
-                SendToApp(COMMAND.REGISTER_SUCCESS);
+                Send(COMMAND.REGISTER_SUCCESS);
                 user = new User(login, password);
-                SendToApp(user.id.ToString());
+                Send(user.id.ToString());
                 appContext.Users.Add(user);
                 appContext.SaveChanges();
             }
@@ -112,7 +112,7 @@ namespace Server.TCP
 
         void SendNotes()
         {
-            int id = int.Parse(ReceiveFromApp());
+            int id = int.Parse(Receive());
             var user = appContext.Users.Find(id);
             if(user == null)
             {
@@ -120,13 +120,13 @@ namespace Server.TCP
             }
             else
             {
-                SendToApp(user.notes_id);
+                Send(user.notes_id);
             }
         }
 
         void SendNote()
         {
-            int id = int.Parse(ReceiveFromApp());
+            int id = int.Parse(Receive());
             var note = appContext.Notes.Find(id);
             if(note == null)
             {
@@ -134,7 +134,7 @@ namespace Server.TCP
             }
         }
 
-        private void SendToApp(string data)
+        private void Send(string data)
         {
             NetworkStream stream = null;
             try
@@ -158,7 +158,7 @@ namespace Server.TCP
                 stream = client.GetStream();
                 var text_byte_array = Encoding.UTF8.GetBytes(text);
                 int block_count = ((text_byte_array.Length - 1) / 256) + 1;
-                SendToApp(block_count.ToString());
+                Send(block_count.ToString());
                 for (int i = 0; i < block_count; i++)
                 {
                     byte[] byte_array = new byte[256];
@@ -177,7 +177,7 @@ namespace Server.TCP
             }
         }
 
-        private void SendToApp(COMMAND command)
+        private void Send(COMMAND command)
         {
             NetworkStream stream = null;
             try
@@ -193,7 +193,7 @@ namespace Server.TCP
             }
         }
 
-        private string ReceiveFromApp()
+        private string Receive()
         {
             NetworkStream stream = null;
 

@@ -21,10 +21,8 @@ namespace _4sem_oop_lab1
     public partial class Login : Window
     {
 
-        private AppContext appContext;
         public Login()
         {
-            appContext = new AppContext();
             InitializeComponent();
         }
 

@@ -32,9 +32,9 @@ namespace _4sem_oop_lab1
         private void Window_Closed(object sender, EventArgs e)
         {
             note.SetText(NoteText.Text);
-            AppContext appContext = new AppContext();
-            appContext.Notes.Add(note);
-            appContext.SaveChanges();
+            //appContext.Notes.Add(note);
+            AppContext.getDataBase().SaveChanges();
+            MainWindow.NotesGrid.ItemsSource = AppContext.getDataBase().Notes.ToList();
         }
     }
 }

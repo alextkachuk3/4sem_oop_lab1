@@ -21,23 +21,22 @@ namespace _4sem_oop_lab1
     /// </summary>
     public partial class MainWindow : Window
     {
-        AppContext appContext;
-
+        public static DataGrid NotesGrid;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            appContext = new AppContext();
+            NotesGrid = NotesList;
 
             //foreach(var note in appContext.Notes)
             //{
             //    NotesList.Items.Add(note.short_text);
             //}
 
-            NotesList.ItemsSource = appContext.Notes.ToList();
+            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
 
-            if(appContext.Users.ToList().Count == 1)
+            if(AppContext.getDataBase().Users.ToList().Count == 1)
             {                
                 AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
             }
@@ -79,24 +78,26 @@ namespace _4sem_oop_lab1
                 my_text += "b";
             }
             Note note = new Note(my_text);
-            note.server_id = -1;
-            appContext.Notes.Add(note);
+            //note.server_id;
+            AppContext.getDataBase().Notes.Add(note);
 
-            appContext.SaveChanges();
+            AppContext.getDataBase().SaveChanges();
 
-            NotesList.ItemsSource = appContext.Notes.ToList();
+            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
 
             NoteEditor noteEditor = new NoteEditor(note);
 
-            noteEditor.Owner = this;
+            //noteEditor.Owner = this;
 
             noteEditor.Show();
+
+            //noteEditor.
 
         }
         
         private void AccountButton_Click(object sender, RoutedEventArgs e)
         {
-            if(appContext.Users.ToList().Count == 0)
+            if(AppContext.getDataBase().Users.ToList().Count == 0)
             {
                 Login loginWindow = new Login();
 
@@ -112,11 +113,11 @@ namespace _4sem_oop_lab1
                 MessageBoxButton.YesNo);
                 if(boxResult == MessageBoxResult.Yes)
                 {
-                    foreach (User user in appContext.Users)
+                    foreach (User user in AppContext.getDataBase().Users)
                     {
-                        appContext.Users.Remove(user);
+                        AppContext.getDataBase().Users.Remove(user);
                     }
-                    appContext.SaveChanges();
+                    AppContext.getDataBase().SaveChanges();
                     AccountManageIcon.Source = new BitmapImage(new Uri("login.png", UriKind.Relative));
                 }
             }
@@ -133,12 +134,21 @@ namespace _4sem_oop_lab1
             NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "local_id").Visibility = Visibility.Hidden;
             NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "server_id").Visibility = Visibility.Hidden;
             NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "text").Visibility = Visibility.Hidden;
-            NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "text").Header = string.Empty;
+            NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "last_mod_time").Visibility = Visibility.Hidden;
+            NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "short_text").Width = 317;
+            NotesList.Columns.FirstOrDefault(x => x.Header.ToString() == "short_text").Header = string.Empty;
         }
 
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
+            foreach(Note note in NotesList.SelectedItems)
+            {
+                NoteEditor noteEditor = new NoteEditor(note);
 
+                noteEditor.Owner = this;
+
+                noteEditor.Show();
+            }
         }
     }
 }

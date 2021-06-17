@@ -25,10 +25,8 @@ namespace _4sem_oop_lab1.TCP
     {
         const string ip = "192.168.0.85";
         const int port = 25565;
-        static AppContext appContext;
         static Client()
         {
-            appContext = new AppContext();
             //client = new TcpClient();
         }
 
@@ -43,12 +41,12 @@ namespace _4sem_oop_lab1.TCP
             {
                 int id = int.Parse(Client.ReceiveFromApp());
 
-                foreach (User user in appContext.Users)
+                foreach (User user in AppContext.getDataBase().Users)
                 {
-                    appContext.Users.Remove(user);
+                    AppContext.getDataBase().Users.Remove(user);
                 }
 
-                appContext.SaveChanges();
+                AppContext.getDataBase().SaveChanges();
 
                 User login_user = new User(login, password);
 
@@ -56,9 +54,9 @@ namespace _4sem_oop_lab1.TCP
 
                 login_user.server_id = id;
 
-                appContext.Users.Add(login_user);
+                AppContext.getDataBase().Users.Add(login_user);
 
-                appContext.SaveChanges();
+                AppContext.getDataBase().SaveChanges();
 
                 Close();
 
@@ -90,12 +88,12 @@ namespace _4sem_oop_lab1.TCP
             {
                 int id = int.Parse(Client.ReceiveFromApp());
 
-                foreach (User user in appContext.Users)
+                foreach (User user in AppContext.getDataBase().Users)
                 {
-                    appContext.Users.Remove(user);
+                    AppContext.getDataBase().Users.Remove(user);
                 }
 
-                appContext.SaveChanges();
+                AppContext.getDataBase().SaveChanges();
 
                 User login_user = new User(login, password);
 
@@ -103,9 +101,9 @@ namespace _4sem_oop_lab1.TCP
 
                 login_user.server_id = id;
 
-                appContext.Users.Add(login_user);
+                AppContext.getDataBase().Users.Add(login_user);
 
-                appContext.SaveChanges();
+                AppContext.getDataBase().SaveChanges();
 
                 Close();
 
