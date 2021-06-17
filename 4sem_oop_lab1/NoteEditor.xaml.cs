@@ -1,4 +1,5 @@
-﻿using System;
+﻿using _4sem_oop_lab1.TCP;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,6 +36,12 @@ namespace _4sem_oop_lab1
             //appContext.Notes.Add(note);
             AppContext.getDataBase().SaveChanges();
             MainWindow.NotesGrid.ItemsSource = AppContext.getDataBase().Notes.ToList();
+            
+            if (note.server_id == -1 && AppContext.getDataBase().Users.Count() != 0)
+            {
+                User user = AppContext.getDataBase().Users.First();
+                note.server_id = Client.AddNoteToServer(user, note);
+            }
         }
     }
 }

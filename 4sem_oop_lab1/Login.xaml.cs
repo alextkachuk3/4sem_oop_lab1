@@ -28,33 +28,55 @@ namespace _4sem_oop_lab1
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
         {
-            if(Client.Login(LoginField.Text, PasswordField.Password))
+            try
             {
-                MessageBox.Show("Login success!");
-                this.Close();
+                if (Client.Login(LoginField.Text, PasswordField.Password))
+                {
+                    MessageBox.Show("Login success!");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Login fail!");
+                }
             }
-            else
+            catch
             {
-                MessageBox.Show("Login fail!");
+                ServerError();
             }
         }
 
         private void RegistrationButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Client.Register(LoginField.Text, PasswordField.Password))
+            try
             {
-                MessageBox.Show("Registration success!");
-                this.Close();
+                if (Client.Register(LoginField.Text, PasswordField.Password))
+                {
+                    MessageBox.Show("Registration success!");
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Login is busy!");
+                }
             }
-            else
+            catch
             {
-                MessageBox.Show("Login is busy!");
+                ServerError();
             }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             this.Owner.Visibility = Visibility.Visible;
+        }
+
+        private void ServerError()
+        {
+            this.Owner.Visibility = Visibility.Visible;
+            this.Owner.WindowState = WindowState.Normal;
+            MessageBox.Show("Server doesn't respond!");
+            this.Close();
         }
     }
 }

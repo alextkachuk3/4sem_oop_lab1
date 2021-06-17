@@ -16,6 +16,7 @@ namespace _4sem_oop_lab1
             this.text = text;
             UpdateShortText();
             UpdateEditTime();
+            server_id = -1;
         }
 
         [Key]
@@ -37,42 +38,6 @@ namespace _4sem_oop_lab1
                 }
                 short_text += text[i];
             }
-            //for (int i = 0, j = 0; i < 350 - text.Length; i++, j++)
-            //{
-            //    if (j == 50)
-            //    {
-            //        short_text += '\n';
-            //        j = 0;
-            //    }
-            //    short_text += " ";
-            //}
-
-            //for(int i = 0; i < 6; i++)
-            //{
-            //    short_text += '\n';
-            //}
-
-            //if (text.Length < 10)
-            //{
-            //    for (int i = 0; i < 10; i++)
-            //    {
-            //        if (i < text.Length)
-            //        {
-            //            short_text += text[i];
-            //        }
-            //        else
-            //        {
-            //            short_text += " ";
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    for(int i = 0; i < 350 && i < text.Length; i++)
-            //    {
-            //        short_text += text[i];
-            //    }
-            //}
         }
 
         public void SetText(string text)

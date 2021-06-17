@@ -19,5 +19,10 @@ namespace Server
         public string login { get; set; }
         public string password { get; set; }
         public string notes_id { get; private set; }
+
+        public void AddNote(int note_id)
+        {
+            this.notes_id += note_id + " ";
+        }
     }
 }

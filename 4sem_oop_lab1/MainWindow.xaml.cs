@@ -17,7 +17,7 @@ using System.Windows.Shapes;
 namespace _4sem_oop_lab1
 {
     /// <summary>
-    /// Логика взаимодействия для MainWindow.xaml
+    /// Interaction logic for  MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
@@ -42,36 +42,8 @@ namespace _4sem_oop_lab1
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             string my_text = "";
-            for (int i = 0; i < 50; i++)
-            {
-                my_text += "a";
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                my_text += "b";
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                my_text += "b";
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                my_text += "b";
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                my_text += "b";
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                my_text += "b";
-            }
-            for (int i = 0; i < 50; i++)
-            {
-                my_text += "b";
-            }
             Note note = new Note(my_text);
-            //note.server_id;
+            
             AppContext.getDataBase().Notes.Add(note);
 
             AppContext.getDataBase().SaveChanges();
@@ -90,21 +62,25 @@ namespace _4sem_oop_lab1
         
         private void AccountButton_Click(object sender, RoutedEventArgs e)
         {
-            if(AppContext.getDataBase().Users.ToList().Count == 0)
+            if (AppContext.getDataBase().Users.ToList().Count == 0)
             {
                 Login loginWindow = new Login();
+
 
                 loginWindow.Owner = this;
 
                 loginWindow.Show();
 
                 this.Visibility = Visibility.Hidden;
+
+                AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
+
             }
-            else 
+            else
             {
                 MessageBoxResult boxResult = MessageBox.Show("Are you sure want to signout?", "Logout",
                 MessageBoxButton.YesNo);
-                if(boxResult == MessageBoxResult.Yes)
+                if (boxResult == MessageBoxResult.Yes)
                 {
                     foreach (User user in AppContext.getDataBase().Users)
                     {
@@ -113,6 +89,13 @@ namespace _4sem_oop_lab1
                     AppContext.getDataBase().SaveChanges();
                     AccountManageIcon.Source = new BitmapImage(new Uri("login.png", UriKind.Relative));
                 }
+                foreach(Note note in AppContext.getDataBase().Notes)
+                {
+                    if (note.server_id != -1)
+                        AppContext.getDataBase().Notes.Remove(note);
+                }
+                AppContext.getDataBase().SaveChanges();
+                NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
             }
             
         }

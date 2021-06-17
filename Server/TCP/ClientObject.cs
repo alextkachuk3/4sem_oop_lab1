@@ -18,18 +18,16 @@ namespace Server.TCP
             REGISTER_FAIL,
             RECEIVE_NOTES_ID,
             DELETE_NOTE,
-            ADD_NOTE
+            ADD_NOTE,
+            UPDATE_NOTE
         }
 
         public ClientObject(TcpClient tcpClient)
         {
             client = tcpClient;
-            appContext = new AppContext();
         }
 
         private TcpClient client;
-
-        AppContext appContext;
 
         public void GetCommand()
         {
@@ -60,9 +58,14 @@ namespace Server.TCP
                         }
                     case COMMAND.ADD_NOTE:
                         {
-
-                            break;
+                        AddNote();
+                        break;
                         }
+                case COMMAND.UPDATE_NOTE:
+                    {
+                        UpdateNote();
+                        break;
+                    }
                     default:
                         {
                             throw new Exception("Wrong command!");
@@ -79,7 +82,7 @@ namespace Server.TCP
         {
             string login = Receive();
             string password = Receive();
-            User user = appContext.Users.ToList().Find(x => x.login == login && x.password == password);
+            User user = AppContext.getDataBase().Users.ToList().Find(x => x.login == login && x.password == password);
             if(user == null)
             {
                 Send(COMMAND.LOGIN_FAIL);
@@ -95,7 +98,7 @@ namespace Server.TCP
         {
             string login = Receive();
             string password = Receive();
-            User user = appContext.Users.ToList().Find(x => x.login == login);
+            User user = AppContext.getDataBase().Users.ToList().Find(x => x.login == login);
             if(user != null)
             {
                 Send(COMMAND.REGISTER_FAIL);
@@ -103,17 +106,35 @@ namespace Server.TCP
             else
             {
                 Send(COMMAND.REGISTER_SUCCESS);
-                user = new User(login, password);
-                Send(user.id.ToString());
-                appContext.Users.Add(user);
-                appContext.SaveChanges();
+                User new_user = new User(login, password);
+                AppContext.getDataBase().Users.Add(new_user);
+                AppContext.getDataBase().SaveChanges();
+                Send(new_user.id.ToString());
             }
+        }
+
+        void AddNote()
+        {
+            int user_id = int.Parse(Receive());
+            string text = ReceiveBigText();
+            string date = Receive();
+            Note note = new Note(text, date);
+            AppContext.getDataBase().Notes.Add(note);
+            User user = AppContext.getDataBase().Users.Find(user_id);
+            user.AddNote(note.id);
+            AppContext.getDataBase().SaveChanges();
+            Send(note.id.ToString());
+        }
+
+        void UpdateNote()
+        {
+
         }
 
         void SendNotes()
         {
             int id = int.Parse(Receive());
-            var user = appContext.Users.Find(id);
+            var user = AppContext.getDataBase().Users.Find(id);
             if(user == null)
             {
                 throw new Exception("User ID not exist");
@@ -127,7 +148,7 @@ namespace Server.TCP
         void SendNote()
         {
             int id = int.Parse(Receive());
-            var note = appContext.Notes.Find(id);
+            var note = AppContext.getDataBase().Notes.Find(id);
             if(note == null)
             {
                 throw new Exception("Note ID not exist");
@@ -150,7 +171,7 @@ namespace Server.TCP
             }
         }
 
-        private void SendToAppBigText(string text)
+        private void SendBigText(string text)
         {
             NetworkStream stream = null;
             try
@@ -175,6 +196,24 @@ namespace Server.TCP
             {
                 Console.WriteLine(e.Message);
             }
+        }
+
+        private string ReceiveBigText()
+        {
+            NetworkStream stream = null;
+            try
+            {
+                stream = client.GetStream();
+                int text_lenght = int.Parse(Receive());
+                byte[] data_array = new byte[text_lenght];
+                stream.Read(data_array, 0, data_array.Length);
+                return Encoding.UTF8.GetString(data_array);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            return null;
         }
 
         private void Send(COMMAND command)

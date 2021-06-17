@@ -30,43 +30,6 @@ namespace _4sem_oop_lab1.TCP
             //client = new TcpClient();
         }
 
-        public static bool Login(string login, string password)
-        {
-            Open();
-            SendToApp(COMMAND.LOGIN);
-            SendToApp(login);
-            SendToApp(password);
-            COMMAND command = (COMMAND)int.Parse(ReceiveFromApp());
-            if(command == COMMAND.LOGIN_SUCCESS)
-            {
-                int id = int.Parse(Client.ReceiveFromApp());
-
-                foreach (User user in AppContext.getDataBase().Users)
-                {
-                    AppContext.getDataBase().Users.Remove(user);
-                }
-
-                AppContext.getDataBase().SaveChanges();
-
-                User login_user = new User(login, password);
-
-                login_user.is_logined = 1;
-
-                login_user.server_id = id;
-
-                AppContext.getDataBase().Users.Add(login_user);
-
-                AppContext.getDataBase().SaveChanges();
-
-                Close();
-
-                return true;
-            }
-            Close();
-
-            return false;
-        }
-
         private static void Open()
         {
             client = new TcpClient(ip, port);
@@ -77,16 +40,53 @@ namespace _4sem_oop_lab1.TCP
             client.Close();
         }
 
+        public static bool Login(string login, string password)
+        {
+            Open();
+            Send(COMMAND.LOGIN);
+            Send(login);
+            Send(password);
+            COMMAND command = (COMMAND)int.Parse(Receive());
+            if(command == COMMAND.LOGIN_SUCCESS)
+            {
+                int id = int.Parse(Client.Receive());
+
+                foreach (User user in AppContext.getDataBase().Users)
+                {
+                    AppContext.getDataBase().Users.Remove(user);
+                }
+
+                AppContext.getDataBase().SaveChanges();
+
+                User login_user = new User(login, password);
+
+                login_user.is_logined = 1;
+
+                login_user.server_id = id;
+
+                AppContext.getDataBase().Users.Add(login_user);
+
+                AppContext.getDataBase().SaveChanges();
+
+                Close();
+
+                return true;
+            }
+            Close();
+
+            return false;
+        }
+
         public static bool Register(string login, string password)
         {
             Open();
-            SendToApp(COMMAND.REGISTER);
-            SendToApp(login);
-            SendToApp(password);
-            COMMAND command = (COMMAND)int.Parse(ReceiveFromApp());
+            Send(COMMAND.REGISTER);
+            Send(login);
+            Send(password);
+            COMMAND command = (COMMAND)int.Parse(Receive());
             if (command == COMMAND.REGISTER_SUCCESS)
             {
-                int id = int.Parse(Client.ReceiveFromApp());
+                int id = int.Parse(Receive());
 
                 foreach (User user in AppContext.getDataBase().Users)
                 {
@@ -111,6 +111,23 @@ namespace _4sem_oop_lab1.TCP
             }
             Close();
             return false;
+        }
+
+        public static int AddNoteToServer(User user, Note note)
+        {
+            Open();
+            Send(COMMAND.ADD_NOTE);
+            Send(user.server_id.ToString());
+            SendBigText(note.text);
+            Send(note.last_mod_time);
+            int server_id = int.Parse(Receive());
+            Close();
+            return server_id;
+        }
+
+        public static void UpdateNoteOnServer(User user, Note note)
+        {
+
         }
 
         public static List<int> GetNotesID()
@@ -123,52 +140,7 @@ namespace _4sem_oop_lab1.TCP
 
         private static TcpClient client;
 
-        /*public void GetCommand()
-        {
-            try
-            {
-                COMMAND command = (COMMAND)int.Parse(ReceiveFromApp());
-                switch (command)
-                {
-                    case COMMAND.LOGIN:
-                        {
-                            
-                            break;
-                        }
-                    case COMMAND.REGISTER:
-                        {
-
-                            break;
-                        }
-                    case COMMAND.RECEIVE_NOTES_ID:
-                        {
-
-                            break;
-                        }
-                    case COMMAND.DELETE_NOTE:
-                        {
-
-                            break;
-                        }
-                    case COMMAND.ADD_NOTE:
-                        {
-
-                            break;
-                        }
-                    default:
-                        {
-                            throw new Exception("Wrong command!");
-                        }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }*/
-
-
-        public static void SendToApp(string data)
+        public static void Send(string data)
         {
             NetworkStream stream = null;
             try
@@ -184,13 +156,13 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
-        private static void SendToAppBigText(string text)
+        private static void SendBigText(string text)
         {
             NetworkStream stream = null;
             try
             {
                 stream = client.GetStream();                
-                SendToApp(text.Length.ToString());
+                Send(text.Length.ToString());
                 byte[] data_array = Encoding.UTF8.GetBytes(text);
                 stream.Write(data_array, 0, data_array.Length);
             }
@@ -206,7 +178,7 @@ namespace _4sem_oop_lab1.TCP
             try
             {
                 stream = client.GetStream();
-                int text_lenght = int.Parse(ReceiveFromApp());
+                int text_lenght = int.Parse(Receive());
                 byte[] data_array = new byte[text_lenght];
                 stream.Read(data_array, 0, data_array.Length);
                 return Encoding.UTF8.GetString(data_array);
@@ -218,7 +190,7 @@ namespace _4sem_oop_lab1.TCP
             return null;
         }
 
-        private static void SendToApp(COMMAND command)
+        private static void Send(COMMAND command)
         {
             NetworkStream stream = null;
             try
@@ -234,7 +206,7 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
-        public static string ReceiveFromApp()
+        private static string Receive()
         {
             NetworkStream stream = null;
 
@@ -242,6 +214,13 @@ namespace _4sem_oop_lab1.TCP
             byte[] data_array = new byte[256];
             stream.Read(data_array, 0, 256);
             return Encoding.UTF8.GetString(data_array).Replace("\0", "");
+        }
+        
+        
+
+        public static void SyncNotes()
+        {
+
         }
     }
 }
