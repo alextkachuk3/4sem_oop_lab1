@@ -1,6 +1,7 @@
 ﻿using _4sem_oop_lab1.TCP;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,8 +40,15 @@ namespace _4sem_oop_lab1
             
             if (note.server_id == -1 && AppContext.getDataBase().Users.Count() != 0)
             {
-                User user = AppContext.getDataBase().Users.First();
-                note.server_id = Client.AddNoteToServer(user, note);
+                try
+                {
+                    User user = AppContext.getDataBase().Users.First();
+                    note.server_id = Client.AddNoteToServer(user, note);
+                }
+                catch(Exception exc)
+                {
+                    Debug.WriteLine(exc.Message);
+                }
             }
         }
     }

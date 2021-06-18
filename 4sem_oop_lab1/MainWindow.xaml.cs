@@ -1,6 +1,7 @@
 ﻿using _4sem_oop_lab1.TCP;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -39,15 +40,17 @@ namespace _4sem_oop_lab1
                 AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
             }
 
+            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+
             try
             {
                 Client.SyncNotes();
 
                 NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
             }
-            catch
+            catch (Exception exc)
             {
-
+                Debug.WriteLine(exc.Message);
             }
 
             var inner = Task.Factory.StartNew(() =>  // вложенная задача

@@ -8,9 +8,6 @@ using System.Windows;
 
 namespace _4sem_oop_lab1
 {
-    /// <summary>
-    /// Логика взаимодействия для App.xaml
-    /// </summary>
     public partial class App : Application
     {
     }
