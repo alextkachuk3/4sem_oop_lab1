@@ -153,6 +153,7 @@ namespace _4sem_oop_lab1.TCP
             SendBigText(note.text);
             Send(note.last_mod_time);
             int server_id = int.Parse(Receive());
+            note.server_id = server_id;
             Close();
             return server_id;
         }

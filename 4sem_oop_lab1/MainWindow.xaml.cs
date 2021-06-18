@@ -3,7 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -37,26 +39,35 @@ namespace _4sem_oop_lab1
                 AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
             }
 
-            Client.SyncNotes();
+            try
+            {
+                Client.SyncNotes();
 
-            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+                NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+            }
+            catch
+            {
 
-            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(Sync);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 15);
-            dispatcherTimer.Start();
+            }
 
-
+            var inner = Task.Factory.StartNew(() =>  // вложенная задача
+            {
+                Sync();
+            });
         }
 
         /// <summary>
         /// Function which run for sync ever 15 second 
         /// </summary>
-        private void Sync(object sender, EventArgs e)
+        private void Sync()
         {
             Client.SyncNotes();
 
             NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+
+            int seconds = 15 * 1000;
+
+            Thread.Sleep(seconds);
         }
 
 

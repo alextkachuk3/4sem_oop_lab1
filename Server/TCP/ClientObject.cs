@@ -9,6 +9,9 @@ namespace Server.TCP
 {
     class ClientObject
     {
+        /// <summary>
+        /// Commands for communication between server and app
+        /// </summary>
         enum COMMAND
         {
             LOGIN,
