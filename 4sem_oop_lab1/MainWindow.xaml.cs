@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace _4sem_oop_lab1
 {
@@ -31,13 +32,30 @@ namespace _4sem_oop_lab1
 
             NotesList.CanUserAddRows = false;
 
-            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
-
-            if(AppContext.getDataBase().Users.ToList().Count == 1)
-            {                
+            if (AppContext.getDataBase().Users.ToList().Count == 1)
+            {
                 AccountManageIcon.Source = new BitmapImage(new Uri("logout.png", UriKind.Relative));
             }
+
+            Client.SyncNotes();
+
+            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+
+            DispatcherTimer dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(Sync);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 15);
+            dispatcherTimer.Start();
+
+
         }
+
+        private void Sync(object sender, EventArgs e)
+        {
+            Client.SyncNotes();
+
+            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+        }
+
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
@@ -88,16 +106,18 @@ namespace _4sem_oop_lab1
                     }
                     AppContext.getDataBase().SaveChanges();
                     AccountManageIcon.Source = new BitmapImage(new Uri("login.png", UriKind.Relative));
+                    foreach (Note note in AppContext.getDataBase().Notes)
+                    {
+                        if (note.server_id != -1)
+                            AppContext.getDataBase().Notes.Remove(note);
+                    }
+                    AppContext.getDataBase().SaveChanges();
+                    NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
                 }
-                foreach(Note note in AppContext.getDataBase().Notes)
-                {
-                    if (note.server_id != -1)
-                        AppContext.getDataBase().Notes.Remove(note);
-                }
-                AppContext.getDataBase().SaveChanges();
-                NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
             }
-            
+            Client.SyncNotes();
+
+            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
         }
 
         private void Remove_Click(object sender, RoutedEventArgs e)

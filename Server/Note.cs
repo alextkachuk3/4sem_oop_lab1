@@ -17,6 +17,6 @@ namespace Server
         }
         public int id { get; private set; }
         public string text { get; set; }
-        public string last_mod_time { get; private set; }
+        public string last_mod_time { get; set; }
     }
 }

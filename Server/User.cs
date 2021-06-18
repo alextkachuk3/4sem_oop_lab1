@@ -24,5 +24,10 @@ namespace Server
         {
             this.notes_id += note_id + " ";
         }
+
+        public void DeleteNote(int note_id)
+        {
+            notes_id = notes_id.Replace(note_id.ToString(), "");
+        }
     }
 }

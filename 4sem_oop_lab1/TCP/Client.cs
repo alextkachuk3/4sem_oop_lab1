@@ -16,9 +16,11 @@ namespace _4sem_oop_lab1.TCP
         REGISTER,
         REGISTER_SUCCESS,
         REGISTER_FAIL,
-        RECEIVE_NOTES_ID,
+        RECEIVE_NOTES_INFO,
+        RECEIVE_NOTE,
         DELETE_NOTE,
-        ADD_NOTE
+        ADD_NOTE,
+        UPDATE_NOTE
     }
 
     static class Client
@@ -125,17 +127,24 @@ namespace _4sem_oop_lab1.TCP
             return server_id;
         }
 
-        public static void UpdateNoteOnServer(User user, Note note)
+        public static void UpdateNoteOnServer(Note note)
         {
-
+            Open();
+            Send(COMMAND.UPDATE_NOTE);
+            Send(note.server_id.ToString());
+            SendBigText(note.text);
+            Send(note.last_mod_time);
+            Close();
         }
 
-        public static List<int> GetNotesID()
+        public static string GetNoteText(int id)
         {
-            List<int> notes_id = new List<int>();
-
-
-            return notes_id;
+            Open();
+            Send(COMMAND.RECEIVE_NOTE);
+            Send(id.ToString());
+            string text = ReceiveBigText();
+            Close();
+            return text;
         }
 
         private static TcpClient client;
@@ -206,6 +215,10 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
+        /// <summary>
+        /// Receive
+        /// </summary>
+        /// <returns></returns>
         private static string Receive()
         {
             NetworkStream stream = null;
@@ -215,12 +228,83 @@ namespace _4sem_oop_lab1.TCP
             stream.Read(data_array, 0, 256);
             return Encoding.UTF8.GetString(data_array).Replace("\0", "");
         }
-        
-        
 
-        public static void SyncNotes()
+
+        /// <summary>
+        /// Function sync notes
+        /// </summary>
+        /// <returns>True if user logined, else return false</returns>
+        public static bool SyncNotes()
         {
+            if (AppContext.getDataBase().Users.Count() != 0)
+            {
+                Open();
 
+                User user = AppContext.getDataBase().Users.ToList().First();
+
+                Send(COMMAND.RECEIVE_NOTES_INFO);
+
+                Send(user.server_id.ToString());
+
+                List<int> notes_id = new List<int>();
+
+                List<string> last_mod_data = new List<string>();
+
+                int notes_count = int.Parse(Receive());
+
+                for (int i = 0; i < notes_count; i++)
+                {
+                    notes_id.Add(int.Parse(Receive()));
+                    last_mod_data.Add(Receive());
+                }
+
+                Close();
+
+                for (int i = 0; i < notes_count; i++)
+                {
+                    var note = AppContext.getDataBase().Notes.ToList().Find(x => x.server_id == notes_id[i]);
+                    if (note == null)
+                    {
+                        Open();
+                        Send(COMMAND.RECEIVE_NOTE);
+                        Send(notes_id[i].ToString());
+                        string text = ReceiveBigText();
+                        Note received_note = new Note(text);
+                        received_note.server_id = notes_id[i];
+                        received_note.last_mod_time = last_mod_data[i];
+                        Close();
+                        AppContext.getDataBase().Notes.Add(received_note);
+                        AppContext.getDataBase().SaveChanges();
+                    }
+                    else
+                    {
+
+                        DateTime local_t = DateTime.Parse(last_mod_data[i]);
+                        DateTime server_t = DateTime.Parse(note.last_mod_time);
+                        if (local_t < server_t)
+                        {
+                            note.SetText(GetNoteText(notes_id[i]));
+                        }
+                        else if (local_t > server_t)
+                        {
+                            UpdateNoteOnServer(note);
+                        }
+                    }
+                }
+
+                foreach(Note local_note in AppContext.getDataBase().Notes)
+                {
+                    if(local_note.server_id == -1)
+                    {
+                        AddNoteToServer(user, local_note);
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

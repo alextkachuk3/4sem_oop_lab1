@@ -24,7 +24,7 @@ namespace _4sem_oop_lab1
         public int server_id { get; set; }
         public string text { get; private set; }
         public string short_text { get; private set; }
-        public string last_mod_time { get; private set; }
+        public string last_mod_time { get; set; }
 
         private void UpdateShortText()
         {
