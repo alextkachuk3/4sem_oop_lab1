@@ -8,6 +8,9 @@ using System.Threading;
 
 namespace _4sem_oop_lab1.TCP
 {
+    /// <summary>
+    /// Commands for communication between server and app
+    /// </summary>
     enum COMMAND
     {
         LOGIN,
@@ -23,6 +26,9 @@ namespace _4sem_oop_lab1.TCP
         UPDATE_NOTE
     }
 
+    /// <summary>
+    /// Class for working app with server
+    /// </summary>
     static class Client
     {
         const string ip = "192.168.0.85";
@@ -32,16 +38,28 @@ namespace _4sem_oop_lab1.TCP
             //client = new TcpClient();
         }
 
+        /// <summary>
+        /// Connect to remote server
+        /// </summary>
         private static void Open()
         {
             client = new TcpClient(ip, port);
         }
 
+        /// <summary>
+        /// Disconnect from remote server
+        /// </summary>
         private static void Close()
         {
             client.Close();
         }
 
+        /// <summary>
+        /// User login user
+        /// </summary>
+        /// <param name="login">User login</param>
+        /// <param name="password">User password</param>
+        /// <returns>True if login and password is correct, else return false</returns>
         public static bool Login(string login, string password)
         {
             Open();
@@ -79,6 +97,12 @@ namespace _4sem_oop_lab1.TCP
             return false;
         }
 
+        /// <summary>
+        /// User register command
+        /// </summary>
+        /// <param name="login">user login</param>
+        /// <param name="password">user password</param>
+        /// <returns>Return true if register success, else return false</returns>
         public static bool Register(string login, string password)
         {
             Open();
@@ -115,6 +139,12 @@ namespace _4sem_oop_lab1.TCP
             return false;
         }
 
+        /// <summary>
+        /// Add local note to server
+        /// </summary>
+        /// <param name="user">Local user</param>
+        /// <param name="note">Local note</param>
+        /// <returns></returns>
         public static int AddNoteToServer(User user, Note note)
         {
             Open();
@@ -127,6 +157,10 @@ namespace _4sem_oop_lab1.TCP
             return server_id;
         }
 
+        /// <summary>
+        /// Update note text on server
+        /// </summary>
+        /// <param name="note">Note text which will send to server</param>
         public static void UpdateNoteOnServer(Note note)
         {
             Open();
@@ -137,6 +171,11 @@ namespace _4sem_oop_lab1.TCP
             Close();
         }
 
+        /// <summary>
+        /// Receive note text from server
+        /// </summary>
+        /// <param name="id">Note server id</param>
+        /// <returns>Note text</returns>
         public static string GetNoteText(int id)
         {
             Open();
@@ -147,8 +186,15 @@ namespace _4sem_oop_lab1.TCP
             return text;
         }
 
+        /// <summary>
+        /// TCP client varrieble
+        /// </summary>
         private static TcpClient client;
 
+        /// <summary>
+        /// Send string with max lenght 256
+        /// </summary>
+        /// <param name="data"></param>
         public static void Send(string data)
         {
             NetworkStream stream = null;
@@ -165,6 +211,10 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
+        /// <summary>
+        /// Send text with any length
+        /// </summary>
+        /// <param name="text"></param>
         private static void SendBigText(string text)
         {
             NetworkStream stream = null;
@@ -181,6 +231,10 @@ namespace _4sem_oop_lab1.TCP
             }
         }
 
+        /// <summary>
+        /// Receive text with any length
+        /// </summary>
+        /// <returns>Text</returns>
         private static string ReceiveBigText()
         {
             NetworkStream stream = null;
@@ -199,6 +253,10 @@ namespace _4sem_oop_lab1.TCP
             return null;
         }
 
+        /// <summary>
+        /// Send command to server
+        /// </summary>
+        /// <param name="command"></param>
         private static void Send(COMMAND command)
         {
             NetworkStream stream = null;

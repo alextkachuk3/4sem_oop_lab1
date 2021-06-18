@@ -49,6 +49,9 @@ namespace _4sem_oop_lab1
 
         }
 
+        /// <summary>
+        /// Function which run for sync ever 15 second 
+        /// </summary>
         private void Sync(object sender, EventArgs e)
         {
             Client.SyncNotes();
@@ -70,11 +73,7 @@ namespace _4sem_oop_lab1
 
             NoteEditor noteEditor = new NoteEditor(note);
 
-            //noteEditor.Owner = this;
-
             noteEditor.Show();
-
-            //noteEditor.
 
         }
         

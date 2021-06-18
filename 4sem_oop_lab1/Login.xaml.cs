@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace _4sem_oop_lab1
 {
     /// <summary>
-    /// Логика взаимодействия для Login.xaml
+    /// Interaction logic for Login.xaml
     /// </summary>
     public partial class Login : Window
     {
@@ -71,6 +71,9 @@ namespace _4sem_oop_lab1
             this.Owner.Visibility = Visibility.Visible;
         }
 
+        /// <summary>
+        /// Function shoud run if app can`t connect to server
+        /// </summary>
         private void ServerError()
         {
             this.Owner.Visibility = Visibility.Visible;

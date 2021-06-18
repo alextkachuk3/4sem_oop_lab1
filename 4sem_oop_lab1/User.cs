@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace _4sem_oop_lab1
 {
+    /// <summary>
+    /// Local database user class
+    /// </summary>
     public class User
     {
         private User() { }

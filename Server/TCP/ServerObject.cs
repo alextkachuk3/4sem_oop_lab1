@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace Server.TCP
 {
+    /// <summary>
+    /// Class which distributes connected clients on other threads
+    /// </summary>
     class ServerObject
     {
         public ServerObject(string ip, int port)

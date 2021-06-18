@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace _4sem_oop_lab1
 {
+    /// <summary>
+    /// Local database note table
+    /// </summary>
     public class Note
     {
         public Note() { }
@@ -26,6 +29,9 @@ namespace _4sem_oop_lab1
         public string short_text { get; private set; }
         public string last_mod_time { get; set; }
 
+        /// <summary>
+        /// Update short version of text note
+        /// </summary>
         private void UpdateShortText()
         {
             short_text = string.Empty;
@@ -40,6 +46,10 @@ namespace _4sem_oop_lab1
             }
         }
 
+        /// <summary>
+        /// Set note text
+        /// </summary>
+        /// <param name="text"></param>
         public void SetText(string text)
         {
             this.text = text;
@@ -47,6 +57,9 @@ namespace _4sem_oop_lab1
             UpdateEditTime();
         }
 
+        /// <summary>
+        /// Update editing time
+        /// </summary>
         public void UpdateEditTime()
         {
             this.last_mod_time = DateTime.UtcNow.ToString();

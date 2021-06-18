@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Server
 {
+    /// <summary>
+    /// Note database table class
+    /// </summary>
     public class Note
     {
         private Note() { }

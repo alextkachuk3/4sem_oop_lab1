@@ -182,6 +182,9 @@ namespace Server.TCP
             AppContext.getDataBase().SaveChanges();
         }
 
+        /// <summary>
+        /// Send user notes server id and their last update time
+        /// </summary>
         void SendNotesInfo()
         {
             int id = int.Parse(Receive());
@@ -216,6 +219,9 @@ namespace Server.TCP
             }
         }
 
+        /// <summary>
+        /// Send note text to app
+        /// </summary>
         void SendNote()
         {
             int id = int.Parse(Receive());
@@ -227,6 +233,10 @@ namespace Server.TCP
             SendBigText(note.text);
         }
 
+        /// <summary>
+        /// Function for sending string with max lenght 256
+        /// </summary>
+        /// <param name="data"></param>
         private void Send(string data)
         {
             NetworkStream stream = null;
@@ -243,6 +253,11 @@ namespace Server.TCP
             }
         }
 
+
+        /// <summary>
+        /// Function for sending string with any size
+        /// </summary>
+        /// <param name="text"></param>
         private void SendBigText(string text)
         {
             NetworkStream stream = null;
@@ -259,6 +274,10 @@ namespace Server.TCP
             }
         }
 
+        /// <summary>
+        /// Function for receiving string with any size
+        /// </summary>
+        /// <returns></returns>
         private string ReceiveBigText()
         {
             NetworkStream stream = null;
@@ -277,6 +296,10 @@ namespace Server.TCP
             return null;
         }
 
+        /// <summary>
+        /// Function for sending command to app
+        /// </summary>
+        /// <param name="command"></param>
         private void Send(COMMAND command)
         {
             NetworkStream stream = null;
@@ -293,6 +316,10 @@ namespace Server.TCP
             }
         }
 
+        /// <summary>
+        /// Function for receiving string with max length 256
+        /// </summary>
+        /// <returns></returns>
         private string Receive()
         {
             NetworkStream stream = null;

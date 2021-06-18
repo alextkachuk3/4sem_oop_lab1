@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 namespace _4sem_oop_lab1
 {
     /// <summary>
-    /// Логика взаимодействия для NoteEditor.xaml
+    /// Interaction logic for NoteEditor.xaml
     /// </summary>
     public partial class NoteEditor : Window
     {

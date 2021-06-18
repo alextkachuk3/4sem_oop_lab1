@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Server
 {
+    /// <summary>
+    /// User database class
+    /// </summary>
     public class User
     {
         private User() { }
