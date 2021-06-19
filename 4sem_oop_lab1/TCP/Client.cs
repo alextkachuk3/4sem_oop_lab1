@@ -342,7 +342,11 @@ namespace _4sem_oop_lab1.TCP
                         DateTime server_t = DateTime.Parse(note.last_mod_time);
                         if (local_t < server_t)
                         {
+                            Open();
+                            Send(COMMAND.RECEIVE_NOTE);
                             note.SetText(GetNoteText(notes_id[i]));
+
+                            Close();
                         }
                         else if (local_t > server_t)
                         {

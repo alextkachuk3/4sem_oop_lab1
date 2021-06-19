@@ -33,21 +33,24 @@ namespace _4sem_oop_lab1
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            note.SetText(NoteText.Text);
-            //appContext.Notes.Add(note);
-            AppContext.getDataBase().SaveChanges();
-            MainWindow.NotesGrid.ItemsSource = AppContext.getDataBase().Notes.ToList();
-            
-            if (note.server_id == -1 && AppContext.getDataBase().Users.Count() != 0)
+            if (NoteText.Text.Length != 0)
             {
-                try
+                note.SetText(NoteText.Text);
+                AppContext.getDataBase().Notes.Add(note);
+                AppContext.getDataBase().SaveChanges();
+                MainWindow.NotesGrid.ItemsSource = AppContext.getDataBase().Notes.ToList();
+
+                if (note.server_id == -1 && AppContext.getDataBase().Users.Count() != 0)
                 {
-                    User user = AppContext.getDataBase().Users.First();
-                    note.server_id = Client.AddNoteToServer(user, note);
-                }
-                catch(Exception exc)
-                {
-                    Debug.WriteLine(exc.Message);
+                    try
+                    {
+                        User user = AppContext.getDataBase().Users.First();
+                        note.server_id = Client.AddNoteToServer(user, note);
+                    }
+                    catch (Exception exc)
+                    {
+                        Debug.WriteLine(exc.Message);
+                    }
                 }
             }
         }

@@ -53,10 +53,11 @@ namespace _4sem_oop_lab1
                 Debug.WriteLine(exc.Message);
             }
 
-            var inner = Task.Factory.StartNew(() =>  // вложенная задача
+            Task inner = Task.Factory.StartNew(() =>
             {
                 Sync();
             });
+           
         }
 
         /// <summary>
@@ -64,26 +65,33 @@ namespace _4sem_oop_lab1
         /// </summary>
         private void Sync()
         {
-            Client.SyncNotes();
+            while (true)
+            {
+                Client.SyncNotes();
 
-            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+                this.Dispatcher.Invoke(() =>
+                {
+                    NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+                });
 
-            int seconds = 15 * 1000;
+                int seconds = 15 * 1000;
 
-            Thread.Sleep(seconds);
+                Thread.Sleep(seconds);
+            }
         }
 
 
         private void Add_Click(object sender, RoutedEventArgs e)
         {
             string my_text = "";
+
             Note note = new Note(my_text);
             
-            AppContext.getDataBase().Notes.Add(note);
+            //AppContext.getDataBase().Notes.Add(note);
 
-            AppContext.getDataBase().SaveChanges();
+            //AppContext.getDataBase().SaveChanges();
 
-            NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
+            //NotesList.ItemsSource = AppContext.getDataBase().Notes.ToList();
 
             NoteEditor noteEditor = new NoteEditor(note);
 
