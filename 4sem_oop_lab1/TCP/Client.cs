@@ -98,6 +98,23 @@ namespace _4sem_oop_lab1.TCP
         }
 
         /// <summary>
+        /// Delete note from server
+        /// </summary>
+        public static void Delete(int note_id)
+        {
+            Note note = AppContext.getDataBase().Notes.ToList().Find(x => x.server_id == note_id);
+            User user = AppContext.getDataBase().Users.FirstOrDefault();
+            if(user != default && note != null)
+            {
+                Open();
+                Send(COMMAND.DELETE_NOTE);
+                Send(user.server_id.ToString());
+                Send(note.server_id.ToString());
+                Close();
+            }
+        }
+
+        /// <summary>
         /// User register command
         /// </summary>
         /// <param name="login">user login</param>
